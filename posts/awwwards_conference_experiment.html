@@ -1,0 +1,335 @@
+<!DOCTYPE>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Vangel Tzo | Awwwards conference competition experiment - Technical articles on front-end development</title>
+    <meta name="description" content="This is my online home and blog, where I write and share technical thoughts and articles on front-end development, including the latest cutting-edge technologies.">
+    <meta name="author" content="Vangel Tzo">
+    <meta name="keywords" content="css, sass, scss, ux, design, front-end development, web developer, mixin, code, development, user experience, ui, performance, best practises, awwwwards, awwwards conference, animation, sass loop, sass functions">
+    <meta property="og:title" content="Vangel Tzo | Awwwards conference competition experiment">
+    <meta property="og:url" content="http://vangeltzo.com/awwwards_conference_experiment.html">
+    <meta property="og:image" content="http://vangeltzo.com/img/logo.png">
+    <meta property="og:description" content="This is my online home and blog, where I write and share technical thoughts and articles on front-end development, including the latest cutting-edge technologies.">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="https://vangeltzo.com/posts/favicon.ico">
+    <link rel="stylesheet" href="../stylesheets/screen.css">
+
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+      ga('create', 'UA-39935438-1', 'auto');
+      ga('send', 'pageview');
+
+    </script>
+  </head>
+
+  <body id="posts" class="inner-post-page-5">
+
+    <div class="block-left">
+      <div class="content">
+        <a href="../index.html" class="logo">Vangel Tzo</a>
+        <div class="post-title-section">
+          <div class="section-line">Posts <em>/</em></div>
+          <div class="date"></div>
+          <h1 class="section-title">Awwwards conference experiment</h1>
+          <ul class="tags">
+            <li>CSS</li>
+            <li>HTML</li>
+            <li>SASS</li>
+            <li>Animation</li>
+          </ul>
+          <div class="section-line reverse"><a href="../posts.html">Back to posts</a> <em>/</em></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="block-right">
+      <div class="tweet-link">
+        <a href="https://twitter.com/share" class="footer-line twitter-share-button" data-via="VangelTzo">Tweet</a>
+        <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+      </div>
+      <a href="../posts.html" title="posts" class="posts-menu-icon"></a>
+      <a title="projects" class="projects-menu-icon">
+        <span></span>
+      </a>
+      <div class="inner-post content">
+        <div class="date-highlight">8 FEB 2015</div>
+        <p>
+          Some months ago I participated for fun at <a href="http://conference.awwwards.com/codes/" target="_blank" rel="nofollow external">Awwwards conference competition</a>. <a href="http://conference.awwwards.com" target="_blank" rel="nofollow external">Awwwards conference</a> will take place at 24-25 February in Barcelona. They created a beautiful site to promote this event which caught my attention from the first moment. One of the reasons I like it so much, apart from the elegant design and the intresting speakers, was the impressive animations at the intro section. And then the magic phrase 'Are you a code artist?' An artist no an enthusiast oh yes! So I created the following animation effect that I'll explain to you right away.
+        </p>
+        <p>First let's have a look at the animation <a href="http://conference.awwwards.com/code/vangel-tzo" target="_blank" rel="nofollow external">here.</a></p>
+        <p>Nothing too complicated or too hard to understand here, just some little tricks and a lot of sass magic.</p>
+        <h2>Let's create some circles</h2>
+        <p>
+          First of all thιs idea was influenced by a magnificent <a href="http://codepen.io/lukerichardville/pen/rFugx" target="_blank" rel="nofollow external">codepen by lukerichardville</a>. My approach although was much more simpler.
+        </p>
+        <p>
+          So the markup for this animation was a verbose list with 11 empty list options. Each of them represent a circle.
+        </p>
+        <pre>
+          <code>
+            &#60;ul&#62;
+              &#60;li&#62;&#60;/li&#62;
+              &#60;li&#62;&#60;/li&#62;
+              &#60;li&#62;&#60;/li&#62;
+              &#60;li&#62;&#60;/li&#62;
+              &#60;li&#62;&#60;/li&#62;
+              &#60;li&#62;&#60;/li&#62;
+              &#60;li&#62;&#60;/li&#62;
+              &#60;li&#62;&#60;/li&#62;
+              &#60;li&#62;&#60;/li&#62;
+              &#60;li&#62;&#60;/li&#62;
+              &#60;li&#62;&#60;/li&#62;
+            &#60;/ul&#62;
+          </code>
+        </pre>
+        <p>Let's create the first circle</p>
+        <pre>
+          <code>
+            body {
+              <span>background:</span> #1c1c1c;
+              <span>overflow:</span> hidden;
+            }
+
+            li {
+              <span>list-style:</span> none;
+              <span>box-shadow:</span> inset 1px 1px 40px #19a598;
+              <span>background:</span> #1c1c1c;
+              <span>border-radius:</span> 50%;
+              <span>position:</span> absolute;
+              <span>top:</span> 50%;
+              <span>left:</span> 50%;
+              <span>width:</span> 30px;
+              <span>height:</span> 30px;
+            }
+          </code>
+        </pre>
+        <p>The result should be</p>
+        <p>
+          <img src="../img/awwwards-1.jpg" alt="awwwwards-1">
+        </p>
+        <p>Our circles are positioned absolute (so each li stack upon each other so far) with a 30px width &amp; height and an inset box-shadow to colorize the circles.</p>
+        <p>
+          The next step is to give different dimensions to each circle. Since we don't want to do this manually for 11 elements we are going to use the SASS loop function @for.
+        </p>
+        <pre>
+          <code>
+            <span>@for</span> $i <span>from</span> 1 <span>through</span> 12 {
+
+              <span>$width:</span> 30px * $i;
+              <span>$height:</span> 30px * $i;
+
+              li:nth-child(#{$i}) {
+                <span>width:</span> $width;
+                <span>height:</span> $height;
+              }
+            }
+          </code>
+        </pre>
+        <p>So what we accomplish so far is to separate those circles. Our goal is to create a depth so we have to differentiate the position of each circle. We can achieve that by moving each circle from the top and left via margins and set the biggest circle at the bottom of the stack order.
+        </p>
+        <pre>
+          <code>
+            <em>@for $i from 1 through 12 {
+
+              $width: 30px * $i;
+              $height: 30px * $i;
+
+              li:nth-child(#{$i}) {
+                width: $width;
+                height: $height;</em>
+                <span>z-index:</span> -$i;
+                <span>margin-top:</span> - ($width / 2);
+                <span>margin-left:</span> ($height / 6);
+              <em>}
+            }</em>
+          </code>
+        </pre>
+        <p>This is what we accomplished so far</p>
+        <p>
+          <img src="../img/awwwards-2.jpg" alt="awwwwards-2">
+        </p>
+        <p>What need to do now is to rotate the ul list via rotate 3d into Y axis. We are going to use transform: rotate3d(0, 1, 0, 45deg) property.</p>
+        <small>To perfectly center this animation we are using a wrapper class outside ul, and we center it via vertical and horizontal trick that we mentioned in a <a href="https://vangeltzo.com/posts/absolute_center_vertical_and_horizontal_mixin_2.html">previous blog.</a></small>
+        <h2>Animate the universe</h2>
+        <p>To complete our animation effect guess what, we need to apply an animation ^^. Let's have a look at the animation bellow.</p>
+        <pre>
+          <code>
+            <em>@for $i from 1 through 12 {
+
+              $width: 30px * $i;
+              $height: 30px * $i;</em>
+              <span>$var:</span> $i/5;
+
+              <em>li:nth-child(#{$i}) {
+                width: $width;
+                height: $height;
+                z-index: -$i;
+                margin-top: - ($width / 2);
+                margin-left: ($height / 6);</em>
+                <span>animation:</span> spin 2s #{$var}s infinite;
+              <em>}
+            }</em>
+
+            @keyframes spin {
+              0%    { <span>transform:</span> rotate(0deg) scale(1); }
+              50%   { <span>transform:</span> rotate(360deg) scale(2); }
+              100% { <span>transform:</span> rotate(0deg) scale(1); }
+            }
+          </code>
+        </pre>
+        <p>
+          We applying an infinite animation with an animation delay for each circle to create these sequences of waves. Our animation consist of a full rotate of 360deg and a scale from 1 to 2. Let's sum up.
+        </p>
+        <p>HTML</p>
+        <pre>
+          <code>
+            &#60;div class="wrap"&#62;
+              &#60;ul&#62;
+                &#60;li&#62;&#60;/li&#62;
+                &#60;li&#62;&#60;/li&#62;
+                ...
+              &#60;/ul&#62;
+            &#60;/div&#62;
+          </code>
+        </pre>
+        <p>SCSS</p>
+        <pre>
+          <code>
+            body {
+              <span>background:</span> #1c1c1c;
+              <span>overflow:</span> hidden;
+            }
+
+            .wrap {
+              <span>position:</span> absolute;
+              <span>top:</span> 50%;
+              <span>left:</span> 50%;
+              <span>transform:</span> translate(-50%, -50%);
+            }
+
+            ul {
+              <span>transform:</span> rotate3d(0, 1, 0, 45deg);
+            }
+
+            li {
+              <span>list-style:</span> none;
+              <span>box-shadow:</span> inset 1px 1px 40px #19a598;
+              <span>background:</span> #1c1c1c;
+              <span>border-radius:</span> 50%;
+              <span>position:</span> absolute;
+              <span>top:</span> 50%;
+              <span>left:</span> 50%;
+              <span>width:</span> 30px;
+              <span>height:</span> 30px;
+            }
+
+            <span>@for</span> $i <span>from</span> 1 <span>through</span> 12 {
+              <span>$width:</span> 30px * $i;
+              <span>$height:</span> 30px * $i;
+              <span>$var:</span> $i/5;
+
+              li:nth-child(#{$i}) {
+                <span>width:</span> $width;
+                <span>height:</span> $height;
+                <span>z-index:</span> -$i;
+                <span>margin-top:</span> - ($width / 2);
+                <span>margin-left:</span> ($height / 6);
+                <span>animation:</span> spin 2s #{$var}s infinite;
+              }
+            }
+
+            @keyframes spin {
+              0%    { <span>transform:</span> rotate(0deg) scale(1); }
+              50%   { <span>transform:</span> rotate(360deg) scale(2); }
+              100% { <span>transform:</span> rotate(0deg) scale(1); }
+            }
+          </code>
+        </pre>
+        <p>You can watch the animation in action in the following pen, enjoy!</p>
+        <div class="demo">
+          <p data-height="375" data-theme-id="11482" data-slug-hash="FBiDh" data-default-tab="result" data-user="srekoble" class='codepen'>See the Pen <a href='http://codepen.io/srekoble/pen/FBiDh/'>A looped animation expiriment </a> by Vangel Tzo (<a href='http://codepen.io/srekoble'>@srekoble</a>) on <a href='http://codepen.io'>CodePen</a>.</p>
+          <script async src="https://assets.codepen.io/assets/embed/ei.js"></script>
+        </div>
+        <a href="https://twitter.com/share" class="footer-line twitter-share-button" data-via="VangelTzo">Tweet</a>
+        <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+      </div>
+    </div>
+
+    <div class="overlay">
+      <ul class="projects-menu">
+        <li>
+          <a href="https://www.behance.net/gallery/13876527/Team-Dashboard" target="_blank" rel="nofollow external">
+            <span>Users <strong>Dashboard</strong></span>
+          </a>
+        </li>
+        <li>
+          <a href="http://giorgibou.com/" target="_blank" rel="nofollow external">
+            <span>Giorgi Bou <strong>Architect</strong></span>
+          </a>
+        </li>
+        <li>
+          <a href="http://rpk.io/" target="_blank" rel="nofollow external">
+            <span>Rpk <strong>Photography</strong></span>
+          </a>
+        </li>
+        <li>
+          <a href="https://www.behance.net/gallery/4037361/logos" target="_blank" rel="nofollow external">
+            <span>logo <strong>collection</strong></span>
+          </a>
+        </li>
+        <li>
+          <a href="https://www.behance.net/gallery/8009509/Resume-CV-vangeltzo" target="_blank" rel="nofollow external">
+            <span>resume <strong>print</strong></span>
+          </a>
+        </li>
+        <li>
+          <a href="http://anantiresort.gr/" target="_blank" rel="nofollow external">
+            <span>Ananti <strong>City Resort</strong></span>
+          </a>
+        </li>
+        <li>
+          <a href="http://dsaltas.gr/" target="_blank" rel="nofollow external">
+            <span>Dsaltas <strong>energy</strong></span>
+          </a>
+        </li>
+        <li>
+          <a href="http://gitart.me/" target="_blank" rel="nofollow external">
+            <span>git <strong>art</strong></span>
+          </a>
+        </li>
+        <li>
+          <a href="awwwards_conference_experiment.html#" class="inactive" target="_blank" rel="nofollow external">
+            <span>
+              Koncept <strong>Application</strong><br>
+              <em>in progress</em>
+            </span>
+          </a>
+        </li>
+        <li>
+          <a href="awwwards_conference_experiment.html#" class="inactive" target="_blank" rel="nofollow external">
+            <span>
+              Chieen <strong>Art director</strong><br>
+              <em>in progress</em>
+            </span>
+          </a>
+        </li>
+      </ul>
+    </div>
+
+    <script src="../js/jquery.min.js"></script>
+
+    <script>
+      $('.projects-menu-icon').click(function() {
+        $('html').toggleClass('no-scroll');
+        $(this).toggleClass('active');
+        $('.overlay').toggleClass('show');
+      });
+    </script>
+
+  </body>
+</html>

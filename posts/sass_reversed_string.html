@@ -1,0 +1,217 @@
+<!DOCTYPE>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Vangel Tzo | SASS reversed string - Technical articles on front-end development</title>
+    <meta name="description" content="This is my online home and blog, where I write and share technical thoughts and articles on front-end development, including the latest cutting-edge technologies.">
+    <meta name="author" content="Vangel Tzo">
+    <meta name="keywords" content="css, sass, scss, ux, design, front-end development, web developer, mixin, code, development, user experience, ui, performance, best practises">
+    <meta property="og:title" content="Vangel Tzo | Sass reversed string">
+    <meta property="og:url" content="http://vangeltzo.com/posts/sass_reversed_string.html">
+    <meta property="og:image" content="http://vangeltzo.com/img/logo.png">
+    <meta property="og:description" content="This is my online home and blog, where I write and share technical thoughts and articles on front-end development, including the latest cutting-edge technologies.">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="https://vangeltzo.com/posts/favicon.ico">
+    <link rel="stylesheet" href="../stylesheets/screen.css">
+
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+      ga('create', 'UA-39935438-1', 'auto');
+      ga('send', 'pageview');
+
+    </script>
+  </head>
+
+  <body id="posts" class="inner-post-page-7">
+
+    <div class="block-left">
+      <div class="content">
+        <a href="../index.html" class="logo">Vangel Tzo</a>
+        <div class="post-title-section">
+          <div class="section-line">Posts <em>/</em></div>
+          <div class="date"></div>
+          <h1 class="section-title">SASS reversed string</h1>
+          <ul class="tags">
+            <li>SASS</li>
+
+          </ul>
+          <div class="section-line reverse"><a href="../posts.html">Back to posts</a> <em>/</em></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="block-right">
+      <div class="tweet-link">
+        <a href="https://twitter.com/share" class="footer-line twitter-share-button" data-via="VangelTzo">Tweet</a>
+        <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+      </div>
+      <a href="../posts.html" title="posts" class="posts-menu-icon"></a>
+      <a title="projects" class="projects-menu-icon">
+        <span></span>
+      </a>
+      <div class="inner-post content">
+        <div class="date-highlight">07 JUL 2015</div>
+        <p>
+          Lately I was having a look at some quiz test with some friends. The answer always started
+          like this: "How would you do that with ruby" or "How would you do that with Javascript".
+          Since SASS comes with some advanced functions I could participate into some of them and be
+          proud that even a preprocessor like SASS can stole some glory of these programming languages.
+        </p>
+        <p>These tests are just for fun without any real usage I could think of. so let's start</p>
+        <h2>Reverse a string</h2>
+        <p>
+          The question was: "How would you reverse a string like 'this is awesome' in SASS"
+        </p>
+        <p>Look at following solution</p>
+        <pre>
+          <code>
+            <span>@function</span> str-reverse($string) {
+              <span>$reverse-string:</span> "";
+
+              <span>@for</span> $i <span>from</span> 1 <span>through</span> str-length($string) {
+                $c: str-slice($string, $i, $i);
+                <span>$reverse-string:</span> "#{$c}#{$reverse-string}";
+              }
+
+              <span>@return</span> $reverse-string;
+            }
+          </code>
+        </pre>
+        <p>So how this work? Let's a have a look at each sass functions.</p>
+        <p>First of all we need to create an empty variable to hold our reversed string. Then we create a loop for each character our strings contains. To achieve this we use the power of str-length.</p>
+        <p>An example:</p>
+        <pre>
+          <code>
+            <span>str-lenght</span>("foo") <em>// = 3</em>
+            <span>str-lenght</span>("awesome") <em>// = 7</em>
+            <span>str-lenght</span>("this is awesome") <em>// = 15</em>
+          </code>
+        </pre>
+        <p>So our loop contain 15 steps from 1 to 15. Then we need to slice our string and pick each letter. We used the str-slice to achieve this.</p>
+        <p>An example:</p>
+        <pre>
+          <code>
+            <span>str-slice</span>("foo", 1, 1) <em>// = f</em>
+            <span>str-slice</span>("awesome", 1, 1) <em>// = a</em>
+            <span>str-slice</span>("this is awesome",1 ,1) <em>// = t</em>
+          </code>
+        </pre>
+        <p>str-slice($string, $start-at, [$end-at]) // Extracts a substring from $string.</p>
+        <p>An example:</p>
+        <pre>
+          <code>
+            <span>str-slice</span>("foo", 1, 2) <em>// = fo</em>
+            <span>str-slice</span>("awesome", 2, 4) <em>// = wes</em>
+            <span>str-slice</span>("this is awesome",4 ,9) <em>// = s is a</em>
+          </code>
+        </pre>
+        <p>For our use case we need to capture each letter so it will be:</p>
+        <pre>
+          <code>
+            <em>step-1:</em> <span>str-slice</span>("this is awesome",1 ,1)<em> // t</em>
+            <em>step-2:</em> <span>str-slice</span>("this is awesome",2 ,2)<em> // h</em>
+            <em>step-3:</em> <span>str-slice</span>("this is awesome",3 ,3)<em> // i</em>
+            <em>step-4:</em> <span>str-slice</span>("this is awesome",4 ,4)<em> // s</em>
+            <em> ... </em>
+            <em>step-15:</em> <span>str-slice</span>("this is awesome",15 ,15)<em> // e</em>
+          </code>
+        </pre>
+        The final step is to place each captured letter in our empty variable ($reverse-string).
+        <pre>
+          <code>
+            <em>step-1:</em> <span>$reverse-string</span><em> // t</em>
+            <em>step-2:</em> <span>$reverse-string</span><em> // ht</em>
+            <em>step-3:</em> <span>$reverse-string</span><em> // iht</em>
+            <em>step-4:</em> <span>$reverse-string</span><em> // siht</em>
+            <em> ... </em>
+            <em>step-15:</em> <span>$reverse-string</span><em> // emosewa si siht</em>
+          </code>
+        </pre>
+        <p>Pretty cool right?</p>
+        <p>More 'can we do that in SASS' tests in the following days. Cheers!</p>
+        <div class="demo">
+          <p class="sassmeister" data-gist-id="c9892b439e175fdb80c1" data-height="480" data-theme="dawn"><a href="http://sassmeister.com/gist/c9892b439e175fdb80c1">Play with this gist on SassMeister.</a></p><script src="http://cdn.sassmeister.com/js/embed.js" async></script>
+        </div>
+        <a href="https://twitter.com/share" class="footer-line twitter-share-button" data-via="VangelTzo">Tweet</a>
+        <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+      </div>
+    </div>
+
+    <div class="overlay">
+      <ul class="projects-menu">
+        <li>
+          <a href="https://www.behance.net/gallery/13876527/Team-Dashboard" target="_blank" rel="nofollow external">
+            <span>Users <strong>Dashboard</strong></span>
+          </a>
+        </li>
+        <li>
+          <a href="http://giorgibou.com/" target="_blank" rel="nofollow external">
+            <span>Giorgi Bou <strong>Architect</strong></span>
+          </a>
+        </li>
+        <li>
+          <a href="http://rpk.io/" target="_blank" rel="nofollow external">
+            <span>Rpk <strong>Photography</strong></span>
+          </a>
+        </li>
+        <li>
+          <a href="https://www.behance.net/gallery/4037361/logos" target="_blank" rel="nofollow external">
+            <span>logo <strong>collection</strong></span>
+          </a>
+        </li>
+        <li>
+          <a href="https://www.behance.net/gallery/8009509/Resume-CV-vangeltzo" target="_blank" rel="nofollow external">
+            <span>resume <strong>print</strong></span>
+          </a>
+        </li>
+        <li>
+          <a href="http://anantiresort.gr/" target="_blank" rel="nofollow external">
+            <span>Ananti <strong>City Resort</strong></span>
+          </a>
+        </li>
+        <li>
+          <a href="http://dsaltas.gr/" target="_blank" rel="nofollow external">
+            <span>Dsaltas <strong>energy</strong></span>
+          </a>
+        </li>
+        <li>
+          <a href="http://gitart.me/" target="_blank" rel="nofollow external">
+            <span>git <strong>art</strong></span>
+          </a>
+        </li>
+        <li>
+          <a href="sass_reversed_string.html#" class="inactive" target="_blank" rel="nofollow external">
+            <span>
+              Koncept <strong>Application</strong><br>
+              <em>in progress</em>
+            </span>
+          </a>
+        </li>
+        <li>
+          <a href="sass_reversed_string.html#" class="inactive" target="_blank" rel="nofollow external">
+            <span>
+              Chieen <strong>Art director</strong><br>
+              <em>in progress</em>
+            </span>
+          </a>
+        </li>
+      </ul>
+    </div>
+
+    <script src="../js/jquery.min.js"></script>
+
+    <script>
+      $('.projects-menu-icon').click(function() {
+        $('html').toggleClass('no-scroll');
+        $(this).toggleClass('active');
+        $('.overlay').toggleClass('show');
+      });
+    </script>
+
+  </body>
+</html>

@@ -1,0 +1,350 @@
+<!DOCTYPE>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Vangel Tzo | Transparent text upon overlay - Technical articles on front-end development</title>
+    <meta name="description" content="This is my online home and blog, where I write and share technical thoughts and articles on front-end development, including the latest cutting-edge technologies.">
+    <meta name="author" content="Vangel Tzo">
+    <meta name="keywords" content="css, sass, scss, ux, design, front-end development, web developer, mixin, code, development, user experience, ui, performance, best practises">
+    <meta property="og:title" content="Vangel Tzo | Overlay upon image">
+    <meta property="og:url" content="http://vangeltzo.com/overlay_upon_image.html">
+    <meta property="og:image" content="http://vangeltzo.com/img/logo.png">
+    <meta property="og:description" content="This is my online home and blog, where I write and share technical thoughts and articles on front-end development, including the latest cutting-edge technologies.">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="https://vangeltzo.com/posts/favicon.ico">
+    <link rel="stylesheet" href="../stylesheets/screen.css">
+
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+      ga('create', 'UA-39935438-1', 'auto');
+      ga('send', 'pageview');
+
+    </script>
+  </head>
+
+  <body id="posts" class="inner-post-page-9">
+
+    <div class="block-left">
+      <div class="content">
+        <a href="../index.html" class="logo">Vangel Tzo</a>
+        <div class="post-title-section">
+          <div class="section-line">Posts <em>/</em></div>
+          <div class="date"></div>
+          <h1 class="section-title">Transparent text upon overlay</h1>
+          <ul class="tags">
+            <li>CSS</li>
+            <li>SVG</li>
+            <li>HTML</li>
+
+          </ul>
+          <div class="section-line reverse"><a href="../posts.html">Back to posts</a> <em>/</em></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="block-right">
+      <div class="tweet-link">
+        <a href="https://twitter.com/share" class="footer-line twitter-share-button" data-via="VangelTzo">Tweet</a>
+        <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+      </div>
+      <a href="../posts.html" title="posts" class="posts-menu-icon"></a>
+      <a title="projects" class="projects-menu-icon">
+        <span></span>
+      </a>
+      <div class="inner-post content">
+        <div class="date-highlight">08 FEB 2016</div>
+        <p>
+          Have you ever considered how to create transparent text in an overlay upon a background?
+          Well, I recently came up with some interesting solutions that I'd like to share with you.
+        </p>
+        <p>The screenshot bellow will explain what we are trying to achieve.</p>
+
+        <img src="../img/transparent-text-upon-overlay/transparent-text-upon-overlay-1.png" alt="transparent text upon overlay">
+
+        <p>A transparent text phrase in a semi-transparent overlay upon a background image.
+        So the main problem is <strong style="font-weight:bold;">"How to create transparent text inside an overlay?"</strong>.</p>
+        <p> I suppose that
+        most of us know how to create an overlay upon a background image, for those who don't just have a
+        look at my <a href="http://vangeltzo.com/posts/overlay_upon_image.html">previous post here</a>. Let's start analyzing various possible solutions.
+        </p>
+
+        <h2>#1 Solution: with Background clip</h2>
+
+        <p>When I was confronted with this situation the first thing I thought to use was 'background-clip'.
+        We need to crop the fill from the text phrase and the overlay layer accordingly so the background image
+        will be visible behind the text.
+        </p>
+
+        <pre>
+          <code>
+            <!-- add html code here -->
+
+            <span>.foo {</span>
+              <span>width: </span>400px;
+              <span>height: </span>300px;
+              <span>line-height: </span>300px;
+              <span>text-align: </span>center;
+              <span>font-size: </span> 120px;
+              <span>font-weight: </span> bold;
+              <span>background-image: </span>url('image.png');
+              <span>background-size: </span>cover;
+              <span>background-clip: </span>text;
+              <span>text-fill-color: </span>transparent;
+            <span>}</span>
+          </code>
+        </pre>
+
+        <p>This will produce the following effect.</p>
+
+        <img src="../img/transparent-text-upon-overlay/transparent-text-upon-overlay-2.png" alt="transparent text upon overlay">
+
+        <p>What we did was to create a block element (.foo) with some basic styles for dimensions and text alignment, then we applied a background image alongside with 'background-clip: text'.
+          The 'text-fill-color: transparent' will ensure us that the text color will remain transparent. Although this isn't what we wanted to achieve, is the exactly opposite. Instead of cropping the fill color of the text phrase we cropped the remaining space outside of text and filled the text with the background image. Ok let's continue with a hack to fix that.
+        </p>
+
+        <pre>
+          <code>
+            <span>.foo {</span>
+              <em>width: 400px;
+              height: 300px;
+              line-height: 300px;
+              text-align: center;
+              font-size:  120px;
+              font-weight:  bold;
+              background-image: url('image.png');
+              background-size: cover;
+              background-clip: text;
+              text-fill-color: transparent;</em>
+              <span>position: </span>relative;
+            <span>}</span>
+
+            <span>.foo:before {</span>
+              <span>content: </span>'';
+              <span>position: </span>absolute;
+              <span>top: </span> 0;
+              <span>right: </span>0;
+              <span>bottom: </span>0;
+              <span>left: </span>0;
+              <span>z-index: </span>-2;
+              <span>background-size: </span>cover;
+              <span>background-image: </span> inherit;
+            <span>}</span>
+
+            <span>.foo:after {</span>
+              <span>content: </span>'';
+              <span>position: </span>absolute;
+              <span>top: </span> 0;
+              <span>right: </span>0;
+              <span>bottom: </span>0;
+              <span>left: </span>0;
+              <span>z-index: </span>-1;
+              <span>background: </span>rgba(0, 0, 0, .75);
+            <span>}</span>
+          </code>
+        </pre>
+
+        <p>This will produce the needed effect.</p>
+
+        <img src="../img/transparent-text-upon-overlay/transparent-text-upon-overlay-1.png" alt="transparent text upon overlay">
+
+        <p>Pretty much what we needed right? To achieve that we created a pseudo element with a duplicated background image and another for the overlay. We placed them behind the main element by ordering the z-index values from -2 (for the background image) to -1 (for the semi-transparent overlay background) and 0 for the main element.</p>
+        <p>For a visual presentation see the following example:</p>
+
+        <img src="../img/transparent-text-upon-overlay/transparent-text-upon-overlay-3.png" alt="transparent text upon overlay">
+
+        <h2>#2 Solution: with mix blend mode</h2>
+
+        <p>
+          Let's say that we need to create the same effect as before but with a video instead of a background image. The previous solution is good enough as long as we deal with static backgrounds (or gifs). To confront these limitation we could use the power that blend modes gave us.
+        </p>
+        <p>
+          In our situation the magic property is <strong style="font-weight: bold;">'mix-blend-mode: color-burn'</strong>. Let's create our base markup &amp; styles:
+        </p>
+
+        <pre>
+          <code>
+            <em>HTML</em>
+
+            <span>&#60;div class</span>="foo"<span>&#62;</span>
+              <span>&#60;span&#62;</span>FOO<span>&#60;/span&#62;</span>
+            <span>&#60;/div&#62;</span>
+
+            <em>CSS</em>
+
+            <span>.foo {</span>
+              <span>position: </span>relative;
+              <span>width: </span>400px;
+              <span>height: </span>300px;
+              <span>background-image: </span>url('image.png');
+              <span>background-size: </span>cover;
+            <span>}</span>
+
+            <span>.foo span {</span>
+              <span>position: </span>absolute;
+              <span>top: </span>0;
+              <span>right: </span>0;
+              <span>bottom: </span>0;
+              <span>left: </span>0;
+              <span>color: </span>#fff;
+              <span>line-height: </span>300px;
+              <span>text-align: </span>center;
+              <span>font-size: </span> 120px;
+              <span>font-weight: </span> bold;
+              <span>mix-blend-mode: </span>color-burn;
+              <span>background: </span>rgba(0, 0, 0, .75);
+            <span>}</span>
+          </code>
+        </pre>
+
+        <p>
+          By applying 'mix-blend-mode: color-burn' to 'span' element we darken the background to reflect the content’s natural color.
+        </p>
+        <img src="../img/transparent-text-upon-overlay/transparent-text-upon-overlay-4.gif" alt="transparent text upon overlay">
+
+
+        <h2>#3 Solution: with svg background</h2>
+
+        <!-- screenshot -->
+
+        <p>Supposing we're quite good designers (no hard skills are required) and we can easily create this effect at illustrator, the only thing we have to do is to save our work as svg so we could use it later as the background image.
+        </p>
+
+        <img src="../img/transparent-text-upon-overlay/transparent-text-upon-overlay-5.png" alt="transparent text upon overlay">
+
+        <p>Lastly we'll need to modify the 'fill' property of our svg to apply transparency to overlay. Our svg will look somehow like the following:</p>
+
+        <pre>
+          <code>
+            <em>SVG</em>
+
+              <span>&#60;svg</span> <span>version</span>="1.0" <span>xmlns</span>="http://www.w3.org/2000/svg"
+              <span>width</span>="482pt"
+              <span>height</span>="366pt"
+              <span>viewBox</span>="0 0 482 366"
+              <span>preserveAspectRatio</span>="xMidYMid meet"&#62;</span>
+
+              <span>&#60;g</span> <span>transform</span>="translate(0,366) scale(0.1,-0.1)"
+              <span>fill</span>="rgba(0, 0, 0, .9)"
+              <span>stroke</span>="none"&#62;</span>
+
+                <span>&#60;path</span> d="M0 1830 l0 -1830 2410 0
+                   2410 0 0 1830 0 1830 -2410 0 -2410 0 0
+                   -1830z m2531 388 c75 -34 134 -95 172 -176 31
+                   -65 32 -71 32 -202 0 -117 -3 -143 -23 -192 ... /&#62;</span>
+              <span>&#60;/g&#62;</span>
+            <span>&#60;/svg&#62;</span>
+
+            <em>HTML</em>
+
+            <span>&#60;div</span> class="foo"<span>&#62;</span><span>&#60;/div&#62;</span>
+
+            <em>CSS</em>
+
+            <span>.foo {</span>
+              <span>position: </span>relative;
+              <span>width: </span>400px;
+              <span>height: </span>300px;
+              <span>background-image: </span>url('image.png');
+              <span>background-size: </span>cover;
+            <span>}</span>
+
+            <span>.foo:before {</span>
+              <span>position: </span>absolute;
+              <span>top: </span>0;
+              <span>right: </span>0;
+              <span>bottom: </span>0;
+              <span>left: </span>0;
+              <span>background-image: </span>url('overlay.svg');
+            <span>}</span>
+          </code>
+        </pre>
+
+        <p>
+          The outcome will be the same as before with an important benefit, the compatibility with either background images and videos and the much better browser support in contrary with our previous solutions.
+        </p>
+
+        <p>That's it folks!</p>
+
+        <a href="https://twitter.com/share" class="footer-line twitter-share-button" data-via="VangelTzo">Tweet</a>
+        <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+      </div>
+    </div>
+
+    <div class="overlay">
+      <ul class="projects-menu">
+        <li>
+          <a href="https://www.behance.net/gallery/13876527/Team-Dashboard" target="_blank" rel="nofollow external">
+            <span>Users <strong>Dashboard</strong></span>
+          </a>
+        </li>
+        <li>
+          <a href="http://giorgibou.com/" target="_blank" rel="nofollow external">
+            <span>Giorgi Bou <strong>Architect</strong></span>
+          </a>
+        </li>
+        <li>
+          <a href="http://rpk.io/" target="_blank" rel="nofollow external">
+            <span>Rpk <strong>Photography</strong></span>
+          </a>
+        </li>
+        <li>
+          <a href="https://www.behance.net/gallery/4037361/logos" target="_blank" rel="nofollow external">
+            <span>logo <strong>collection</strong></span>
+          </a>
+        </li>
+        <li>
+          <a href="https://www.behance.net/gallery/8009509/Resume-CV-vangeltzo" target="_blank" rel="nofollow external">
+            <span>resume <strong>print</strong></span>
+          </a>
+        </li>
+        <li>
+          <a href="http://anantiresort.gr/" target="_blank" rel="nofollow external">
+            <span>Ananti <strong>City Resort</strong></span>
+          </a>
+        </li>
+        <li>
+          <a href="http://dsaltas.gr/" target="_blank" rel="nofollow external">
+            <span>Dsaltas <strong>energy</strong></span>
+          </a>
+        </li>
+        <li>
+          <a href="http://gitart.me/" target="_blank" rel="nofollow external">
+            <span>git <strong>art</strong></span>
+          </a>
+        </li>
+        <li>
+          <a href="transparent_text_upon_overlay.html#" class="inactive" target="_blank" rel="nofollow external">
+            <span>
+              Koncept <strong>Application</strong><br>
+              <em>in progress</em>
+            </span>
+          </a>
+        </li>
+        <li>
+          <a href="transparent_text_upon_overlay.html#" class="inactive" target="_blank" rel="nofollow external">
+            <span>
+              Chieen <strong>Art director</strong><br>
+              <em>in progress</em>
+            </span>
+          </a>
+        </li>
+      </ul>
+    </div>
+
+    <script src="../js/jquery.min.js"></script>
+
+    <script>
+      $('.projects-menu-icon').click(function() {
+        $('html').toggleClass('no-scroll');
+        $(this).toggleClass('active');
+        $('.overlay').toggleClass('show');
+      });
+    </script>
+
+  </body>
+</html>

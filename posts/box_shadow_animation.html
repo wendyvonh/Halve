@@ -1,0 +1,346 @@
+<!DOCTYPE>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Vangel Tzo | Box shadow animation - Technical articles on front-end development</title>
+    <meta name="description" content="This is my online home and blog, where I write and share technical thoughts and articles on front-end development, including the latest cutting-edge technologies.">
+    <meta name="author" content="Vangel Tzo">
+    <meta name="keywords" content="css, sass, scss, ux, design, front-end development, web developer, mixin, code, development, user experience, ui, performance, best practises">
+    <meta property="og:title" content="Vangel Tzo | Overlay upon image">
+    <meta property="og:url" content="http://vangeltzo.com/overlay_upon_image.html">
+    <meta property="og:image" content="http://vangeltzo.com/img/logo.png">
+    <meta property="og:description" content="This is my online home and blog, where I write and share technical thoughts and articles on front-end development, including the latest cutting-edge technologies.">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="https://vangeltzo.com/posts/favicon.ico">
+    <link rel="stylesheet" href="../stylesheets/screen.css">
+
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+      ga('create', 'UA-39935438-1', 'auto');
+      ga('send', 'pageview');
+
+    </script>
+  </head>
+
+  <body id="posts" class="inner-post-page-8">
+
+    <div class="block-left">
+      <div class="content">
+        <a href="../index.html" class="logo">Vangel Tzo</a>
+        <div class="post-title-section">
+          <div class="section-line">Posts <em>/</em></div>
+          <div class="date"></div>
+          <h1 class="section-title">Box shadow animation</h1>
+          <ul class="tags">
+            <li>SASS</li>
+            <li>CSS</li>
+            <li>Animation</li>
+          </ul>
+          <div class="section-line reverse"><a href="../posts.html">Back to posts</a> <em>/</em></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="block-right">
+      <div class="tweet-link">
+        <a href="https://twitter.com/share" class="footer-line twitter-share-button" data-via="VangelTzo">Tweet</a>
+        <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+      </div>
+      <a href="../posts.html" title="posts" class="posts-menu-icon"></a>
+      <a title="projects" class="projects-menu-icon">
+        <span></span>
+      </a>
+      <div class="inner-post content">
+        <div class="date-highlight">21 OCT 2015</div>
+        <p>
+          Some weeks ago after a morning browsing on weekly digests and blogs I came across a great project from Jlong <a href="https://github.com/jlong/css-spinners">"css-spinners"</a>.
+        </p>
+        <p>The idea was as simle as that: "Simple CSS spinners and throbbers made
+           with CSS and minimal HTML markup". The minimal markup indicates the usage
+           of one and only element - Now it's challenging! Let's start.
+         </p>
+        <h2>The idea</h2>
+        <p>
+          I struggled to find out a cool shape to animate, like a star or a polygon, but then I decided to start with something simpler. A pixelated cube was a good start so I conclude on a 3x3 cube table.
+        </p>
+        <img src="../img/box-shadow-animation/box_shadow_1.png" alt="box shadow cube shape">
+        <p>
+          I decided to use the power of box shadow to create my shape since project allows one and only element (pseudo before and after sadly are not enough). Firstly I had to create the base box markup.
+        </p>
+        <pre>
+          <code>
+            <span>&#60;div class="pixel-loader" &#62;</span>animation...<span>&#60;/div&#62;</span>
+          </code>
+        </pre>
+        <p>And the styles accordingly:</p>
+        <pre>
+          <code>
+            <span>.pixel-loader</span> {
+              <span>width:</span> 10px;
+              <span>height:</span> 10px;
+              <span>background:</span> #333;
+              <span>color:</span> #333;
+            }
+          </code>
+        </pre>
+        <p>So this is what we have right now:</p>
+        <img src="../img/box-shadow-animation/box_shadow_2.png" alt="box shadow cube shape">
+        <p>Stating the obvious here :), now let's create some more boxes with box shadow. For better understanding about how box-shadow property works have a look at the following example:
+        </p>
+        <pre>
+          <code>
+            <span>.pixel-loader</span> {
+              <span>box-shadow:</span> [horizontal offset] [vertical offset] [blur radius] [optional spread radius] [color];
+            }
+          </code>
+        </pre>
+        <p>So in our example:</p>
+        <pre>
+          <code>
+            <span>.pixel-loader</span> {
+              <em>width: 10px;
+              height: 10px;
+              background: #333;
+              color: #333;</em>
+              <span>box-shadow:</span> 0 15px 0 0,
+                                  15px 0 0 0,
+                                  -15px 0 0 0,
+                                  0 -15px 0 0;
+            }
+          </code>
+        </pre>
+        <img src="../img/box-shadow-animation/box_shadow_3.png" alt="box shadow cube shape">
+        <small>We removed the color value from box-shadow property since we have applied the color property at base element, so the box shadow property will inherit the color value from the color property, cool hah?</small>
+        <p>So far we created a "cross" with these extra boxes. We're applying an extra 5px to create a gap between our boxes. Let's complete the shape by adding the final boxes:</p>
+        <pre>
+          <code>
+            <span>.pixel-loader</span> {
+              <em>width: 10px;
+              height: 10px;
+              background: #333;
+              color: #333;</em>
+              <span>box-shadow:</span> 0 15px 0 0,
+                                  15px 0 0 0,
+                                  -15px 0 0 0,
+                                  0 -15px 0 0,
+                                  15px 15px 0 0,
+                                  -15px -15px 0 0,
+                                  15px -15px 0 0,
+                                  -15px 15px 0 0;
+            }
+          </code>
+        </pre>
+        <img src="../img/box-shadow-animation/box_shadow_4.png" alt="box shadow cube shape">
+        <h2>The animation</h2>
+        <p>The animation we're planning to integrate it's a combination of boxes movement and a smooth color transition.</p>
+        <p>At first we will create the keyframe:</p>
+        <pre>
+          <code>
+            <span>@keyframes anim</span> {
+              <span>33%</span> {
+                <span>box-shadow:</span> 20px 20px 0 0,
+                                    -20px -20px 0 0,
+                                    20px -20px 0 0,
+                                    -20px 20px 0 0,
+                                    0 10px 0 0,
+                                    10px 0 0 0,
+                                    -10px 0 0 0,
+                                    0 -10px 0 0;
+              }
+
+              <span>66%</span> {
+                <span>box-shadow:</span> 20px 20px 0 0,
+                                    -20px -20px 0 0,
+                                    20px -20px 0 0,
+                                    -20px 20px 0 0,
+                                    0 10px 0 0,
+                                    10px 0 0 0,
+                                    -10px 0 0 0,
+                                    0 -10px 0 0;
+              }
+            }
+          </code>
+        </pre>
+        <p>This is what we achieved so far:</p>
+        <p data-height="268" data-theme-id="11482" data-slug-hash="gaoBOa" data-default-tab="result" data-user="srekoble" class='codepen'>See the Pen <a href='http://codepen.io/srekoble/pen/gaoBOa/'>gaoBOa</a> by Vangel Tzo (<a href='http://codepen.io/srekoble'>@srekoble</a>) on <a href='http://codepen.io'>CodePen</a>.</p>
+        <script async src="https://assets.codepen.io/assets/embed/ei.js"></script>
+        <p>The next step is to apply the color transition with filter property. We need to change the value of hue-rotate from 0deg to 360deg.</p>
+        <pre>
+          <code>
+            <span>@keyframes anim</span> {
+              <span>0%</span> {
+                <span>filter:</span> hue-rotate(0deg);
+              }
+
+              <em>33% {
+                box-shadow: 20px 20px 0 0,
+                                    -20px -20px 0 0,
+                                    20px -20px 0 0,
+                                    -20px 20px 0 0,
+                                    0 10px 0 0,
+                                    10px 0 0 0,
+                                    -10px 0 0 0,
+                                    0 -10px 0 0;
+              }
+
+              66% {
+                box-shadow: 20px 20px 0 0,
+                                    -20px -20px 0 0,
+                                    20px -20px 0 0,
+                                    -20px 20px 0 0,
+                                    0 10px 0 0,
+                                    10px 0 0 0,
+                                    -10px 0 0 0,
+                                    0 -10px 0 0;
+              }</em>
+
+              <span>100%</span> {
+                <span>filter:</span> hue-rotate(360deg);
+              }
+            }
+          </code>
+        </pre>
+        <p>Look at the following example with different base colors</p>
+        <p data-height="268" data-theme-id="11482" data-slug-hash="QjaZjg" data-default-tab="result" data-user="srekoble" class='codepen'>See the Pen <a href='http://codepen.io/srekoble/pen/QjaZjg/'>QjaZjg</a> by Vangel Tzo (<a href='http://codepen.io/srekoble'>@srekoble</a>) on <a href='http://codepen.io'>CodePen</a>.</p>
+        <p>This is it! Let's add an extra spinning effect for our cube and it's ready.</p>
+        <pre>
+          <code>
+            <span>.pixel-loader</span> {
+              <span>width: 10px;</span>
+              <span>height: 10px;</span>
+              <span>background: #f35626;</span>
+              <span>color: #f35626;</span>
+              <span>box-shadow:</span> 0 15px 0 0,
+                                  15px 0 0 0,
+                                  -15px 0 0 0,
+                                  0 -15px 0 0,
+                                  15px 15px 0 0,
+                                  -15px -15px 0 0,
+                                  15px -15px 0 0,
+                                  -15px 15px 0 0;
+              <span>animation: anim 2s linear infinite;</span>
+            }
+
+            <em>// Animation keyframe</em>
+
+            <span>@keyframes anim</span> {
+              <span>0%</span> {
+                <span>filter:</span> hue-rotate(0deg);
+              }
+
+              <span>33%</span> {
+                <span>box-shadow:</span> 20px 20px 0 0,
+                                    -20px -20px 0 0,
+                                    20px -20px 0 0,
+                                    -20px 20px 0 0,
+                                    0 10px 0 0,
+                                    10px 0 0 0,
+                                    -10px 0 0 0,
+                                    0 -10px 0 0;
+              }
+
+              <span>66%</span> {
+                <span>box-shadow:</span> 20px 20px 0 0,
+                                    -20px -20px 0 0,
+                                    20px -20px 0 0,
+                                    -20px 20px 0 0,
+                                    0 10px 0 0,
+                                    10px 0 0 0,
+                                    -10px 0 0 0,
+                                    0 -10px 0 0;
+              }
+
+              <span>100%</span> {
+                <span>filter:</span> hue-rotate(360deg);
+                <span>transform:</span> rotate(360deg);
+              }
+            }
+          </code>
+        </pre>
+        <p data-height="268" data-theme-id="11482" data-slug-hash="WQZMzY" data-default-tab="result" data-user="srekoble" class='codepen'>See the Pen <a href='http://codepen.io/srekoble/pen/WQZMzY/'>WQZMzY</a> by Vangel Tzo (<a href='http://codepen.io/srekoble'>@srekoble</a>) on <a href='http://codepen.io'>CodePen</a>.</p>
+        <p>The needed prefixes as always are missing, just add them accordingly.</p>
+        <p>Hope you enjoy! Cheers</p>
+        <a href="https://twitter.com/share" class="footer-line twitter-share-button" data-via="VangelTzo">Tweet</a>
+        <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');
+        </script>
+      </div>
+    </div>
+
+    <div class="overlay">
+      <ul class="projects-menu">
+        <li>
+          <a href="https://www.behance.net/gallery/13876527/Team-Dashboard" target="_blank" rel="nofollow external">
+            <span>Users <strong>Dashboard</strong></span>
+          </a>
+        </li>
+        <li>
+          <a href="http://giorgibou.com/" target="_blank" rel="nofollow external">
+            <span>Giorgi Bou <strong>Architect</strong></span>
+          </a>
+        </li>
+        <li>
+          <a href="http://rpk.io/" target="_blank" rel="nofollow external">
+            <span>Rpk <strong>Photography</strong></span>
+          </a>
+        </li>
+        <li>
+          <a href="https://www.behance.net/gallery/4037361/logos" target="_blank" rel="nofollow external">
+            <span>logo <strong>collection</strong></span>
+          </a>
+        </li>
+        <li>
+          <a href="https://www.behance.net/gallery/8009509/Resume-CV-vangeltzo" target="_blank" rel="nofollow external">
+            <span>resume <strong>print</strong></span>
+          </a>
+        </li>
+        <li>
+          <a href="http://anantiresort.gr/" target="_blank" rel="nofollow external">
+            <span>Ananti <strong>City Resort</strong></span>
+          </a>
+        </li>
+        <li>
+          <a href="http://dsaltas.gr/" target="_blank" rel="nofollow external">
+            <span>Dsaltas <strong>energy</strong></span>
+          </a>
+        </li>
+        <li>
+          <a href="http://gitart.me/" target="_blank" rel="nofollow external">
+            <span>git <strong>art</strong></span>
+          </a>
+        </li>
+        <li>
+          <a href="box_shadow_animation.html#" class="inactive" target="_blank" rel="nofollow external">
+            <span>
+              Koncept <strong>Application</strong><br>
+              <em>in progress</em>
+            </span>
+          </a>
+        </li>
+        <li>
+          <a href="box_shadow_animation.html#" class="inactive" target="_blank" rel="nofollow external">
+            <span>
+              Chieen <strong>Art director</strong><br>
+              <em>in progress</em>
+            </span>
+          </a>
+        </li>
+      </ul>
+    </div>
+
+    <script src="../js/jquery.min.js"></script>
+
+    <script>
+      $('.projects-menu-icon').click(function() {
+        $('html').toggleClass('no-scroll');
+        $(this).toggleClass('active');
+        $('.overlay').toggleClass('show');
+      });
+    </script>
+
+  </body>
+</html>

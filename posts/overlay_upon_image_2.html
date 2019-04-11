@@ -1,0 +1,231 @@
+<!DOCTYPE>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Vangel Tzo | Overlay upon image - Technical articles on front-end development</title>
+    <meta name="description" content="This is my online home and blog, where I write and share technical thoughts and articles on front-end development, including the latest cutting-edge technologies.">
+    <meta name="author" content="Vangel Tzo">
+    <meta name="keywords" content="css, sass, scss, ux, design, front-end development, web developer, mixin, code, development, user experience, ui, performance, best practises">
+    <meta property="og:title" content="Vangel Tzo | Overlay upon image">
+    <meta property="og:url" content="http://vangeltzo.com/overlay_upon_image.html">
+    <meta property="og:image" content="http://vangeltzo.com/img/logo.png">
+    <meta property="og:description" content="This is my online home and blog, where I write and share technical thoughts and articles on front-end development, including the latest cutting-edge technologies.">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="https://vangeltzo.com/posts/favicon.ico">
+    <link rel="stylesheet" href="../stylesheets/screen.css">
+
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+      ga('create', 'UA-39935438-1', 'auto');
+      ga('send', 'pageview');
+
+    </script>
+  </head>
+
+  <body id="posts" class="inner-post-page-2">
+
+    <div class="block-left">
+      <div class="content">
+        <a href="../index.html" class="logo">Vangel Tzo</a>
+        <div class="post-title-section">
+          <div class="section-line">Posts <em>/</em></div>
+          <div class="date"></div>
+          <h1 class="section-title">3 ways to: apply an overlay</h1>
+          <ul class="tags">
+            <li>CSS</li>
+            <li>HTML</li>
+            <li>SASS</li>
+
+          </ul>
+          <div class="section-line reverse"><a href="../posts.html">Back to posts</a> <em>/</em></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="block-right">
+      <div class="tweet-link">
+        <a href="https://twitter.com/share" class="footer-line twitter-share-button" data-via="VangelTzo">Tweet</a>
+        <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+      </div>
+      <a href="../posts.html" title="posts" class="posts-menu-icon"></a>
+      <a title="projects" class="projects-menu-icon">
+        <span></span>
+      </a>
+      <div class="inner-post content">
+        <div class="date-highlight">24 JAN 2015</div>
+        <p>
+          An overlay upon a background image always been a common technique for designers to highlight an image or place a text upon it. So let's assume that we don't want to create this effect with a design software like photoshop but with the power of pure CSS.
+        </p>
+        <p>I'm going to saw you 3 simple ways to apply this effect:</p>
+        <ul>
+          <li>1: With pseudo element</li>
+          <li>2: With Multiple backgrounds &amp; gradient</li>
+          <li>3: With Blend mode</li>
+        </ul>
+        <h2>With pseudo element</h2>
+        <p>
+          This is a common way to apply an overlay upon a background image. You'll need to create a div with some basic styles for the background image. Then to complete our effect we just need to create a pseudo element with an rgba background and strech it through each side.
+        </p>
+        <p>
+          So the styles will be the following:
+        </p>
+        <pre>
+          <code>
+            div {
+              <span>background:</span> url(‘image.jpg’) no-repeat;
+              <span>width:</span> 200px;
+              <span>height:</span> 200px;
+              <span>position:</span> relative;
+
+              &:before {
+                <span>content:</span> ‘’;
+                <span>background:</span> rgba(0, 0, 0, .4);
+                <span>position:</span> absolute;
+                <span>top:</span> 0;
+                <span>right:</span> 0;
+                <span>bottom:</span> 0;
+                <span>left:</span> 0;
+              }
+            }
+          </code>
+        </pre>
+        <h2>With multiple backgrounds &amp; gradient</h2>
+        <p>
+          We could also use the power of multiple background to apply this effect. A though could be to apply a rgba background color with the background image in one background declaration.
+        </p>
+        <pre>
+          <code>
+            div {
+              <span>background:</span> rgba(0, 0, 0, .4),
+                                  url(‘image.jpg);
+              <span>width:</span> 200px;
+              <span>height:</span> 200px;
+            }
+          </code>
+        </pre>
+        <p>
+          The above styles so are invalid since we can't use neat background colors at multiple background property so we need to find an alternative way. Gradient is coming to the rescue! We can fake an rgba background color with the usage of gradient.
+        </p>
+        <p>
+          So the style will be the following:
+        </p>
+        <pre>
+          <code>
+            div {
+              <span>background:</span> linear-gradient(
+                                   rgba(0, 0, 0, .4),
+                                   rgba(0, 0, 0, .4)
+                                 ),
+                                 url(‘image.jpg);
+              <span>width:</span> 200px;
+              <span>height:</span> 200px;
+            }
+          </code>
+        </pre>
+        <p>
+          The main images at the left side are actually using this technique.
+        </p>
+        <h2>With blend mode</h2>
+        <p>
+          With CSS blend mode now we can blend a background image with a background color simple as the following code.
+        </p>
+        <pre>
+          <code>
+            div {
+              <span>background-image:</span> url(‘image.jpg’);
+              <span>background-color:</span> rgba(0, 0, 0, .4);
+              <span>background-blend-mode:</span> multiply;
+              <span>width:</span> 200px;
+              <span>height:</span> 200px;
+            }
+          </code>
+        </pre>
+        <p>Background-blend-mode does all the work for us by multipling and combining the two background properties. You could use any of the other background-blend-mode options (overlay, darken and many more) to accomplish the needed effect.</p>
+        <p>You can see all of the above solutions in action in the following pen, enjoy!</p>
+        <div class="demo">
+          <p data-height="496" data-theme-id="11482" data-slug-hash="qEmdpw" data-default-tab="result" data-user="srekoble" class='codepen'>See the Pen <a href='http://codepen.io/srekoble/pen/qEmdpw/'>3 ways to: apply an overlay</a> by Vangel Tzo (<a href='http://codepen.io/srekoble'>@srekoble</a>) on <a href='http://codepen.io'>CodePen</a>.</p>
+          <script async src="https://assets.codepen.io/assets/embed/ei.js"></script>
+        </div>
+        <a href="https://twitter.com/share" class="footer-line twitter-share-button" data-via="VangelTzo">Tweet</a>
+        <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+      </div>
+    </div>
+
+    <div class="overlay">
+      <ul class="projects-menu">
+        <li>
+          <a href="https://www.behance.net/gallery/13876527/Team-Dashboard" target="_blank" rel="nofollow external">
+            <span>Users <strong>Dashboard</strong></span>
+          </a>
+        </li>
+        <li>
+          <a href="http://giorgibou.com/" target="_blank" rel="nofollow external">
+            <span>Giorgi Bou <strong>Architect</strong></span>
+          </a>
+        </li>
+        <li>
+          <a href="http://rpk.io/" target="_blank" rel="nofollow external">
+            <span>Rpk <strong>Photography</strong></span>
+          </a>
+        </li>
+        <li>
+          <a href="https://www.behance.net/gallery/4037361/logos" target="_blank" rel="nofollow external">
+            <span>logo <strong>collection</strong></span>
+          </a>
+        </li>
+        <li>
+          <a href="https://www.behance.net/gallery/8009509/Resume-CV-vangeltzo" target="_blank" rel="nofollow external">
+            <span>resume <strong>print</strong></span>
+          </a>
+        </li>
+        <li>
+          <a href="http://anantiresort.gr/" target="_blank" rel="nofollow external">
+            <span>Ananti <strong>City Resort</strong></span>
+          </a>
+        </li>
+        <li>
+          <a href="http://dsaltas.gr/" target="_blank" rel="nofollow external">
+            <span>Dsaltas <strong>energy</strong></span>
+          </a>
+        </li>
+        <li>
+          <a href="http://gitart.me/" target="_blank" rel="nofollow external">
+            <span>git <strong>art</strong></span>
+          </a>
+        </li>
+        <li>
+          <a href="https://vangeltzo.com/posts/overlay_upon_image_2.html#" class="inactive" target="_blank" rel="nofollow external">
+            <span>
+              Koncept <strong>Application</strong><br>
+              <em>in progress</em>
+            </span>
+          </a>
+        </li>
+        <li>
+          <a href="https://vangeltzo.com/posts/overlay_upon_image_2.html#" class="inactive" target="_blank" rel="nofollow external">
+            <span>
+              Chieen <strong>Art director</strong><br>
+              <em>in progress</em>
+            </span>
+          </a>
+        </li>
+      </ul>
+    </div>
+
+    <script src="../js/jquery.min.js"></script>
+
+    <script>
+      $('.projects-menu-icon').click(function() {
+        $('html').toggleClass('no-scroll');
+        $(this).toggleClass('active');
+        $('.overlay').toggleClass('show');
+      });
+    </script>
+
+  </body>
+</html>

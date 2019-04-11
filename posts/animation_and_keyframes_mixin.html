@@ -1,0 +1,319 @@
+<!DOCTYPE>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Vangel Tzo | Animation and keyframes mixin - Technical articles on front-end development</title>
+    <meta name="description" content="This is my online home and blog, where I write and share technical thoughts and articles on front-end development, including the latest cutting-edge technologies.">
+    <meta name="author" content="Vangel Tzo">
+    <meta name="keywords" content="css, sass, scss, ux, design, front-end development, web developer, mixin, code, development, user experience, ui, performance, best practises">
+    <meta property="og:title" content="Vangel Tzo | Animation and keyframes mixin">
+    <meta property="og:url" content="http://vangeltzo.com/animation_and_keyframes_mixin.html">
+    <meta property="og:image" content="http://vangeltzo.com/img/logo.png">
+    <meta property="og:description" content="This is my online home and blog, where I write and share technical thoughts and articles on front-end development, including the latest cutting-edge technologies.">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="https://vangeltzo.com/posts/favicon.ico">
+    <link rel="stylesheet" href="../stylesheets/screen.css">
+
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+      ga('create', 'UA-39935438-1', 'auto');
+      ga('send', 'pageview');
+
+    </script>
+  </head>
+
+  <body id="posts" class="inner-post-page-3">
+
+    <div class="block-left">
+      <div class="content">
+        <a href="../index.html" class="logo">Vangel Tzo</a>
+        <div class="post-title-section">
+          <div class="section-line">Posts <em>/</em></div>
+          <div class="date"></div>
+          <h1 class="section-title">Animation &amp; keyframes mixin</h1>
+          <ul class="tags">
+            <li>CSS</li>
+            <li>HTML</li>
+            <li>SASS</li>
+
+          </ul>
+          <div class="section-line reverse"><a href="../posts.html">Back to posts</a> <em>/</em></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="block-right">
+      <div class="tweet-link">
+        <a href="https://twitter.com/share" class="footer-line twitter-share-button" data-via="VangelTzo">Tweet</a>
+        <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+      </div>
+      <a href="../posts.html" title="posts" class="posts-menu-icon"></a>
+      <a title="projects" class="projects-menu-icon">
+        <span></span>
+      </a>
+      <div class="inner-post content">
+        <div class="date-highlight">24 JAN 2015</div>
+        <p>
+          Here is a mixin for situations where you want to combine both animation and keyframes properties. First we need to separate these actions into 2 mixin so we can easily understand the combination of them.
+        </p>
+        <h2>Animation mixin</h2>
+        <p>To create an animation mixin we need to pass into an argument the animation value. We shouldn't forget although the prefixes If we don't use an automated task/gem like autoprefixer. So let's first start with the prefix mixin which is responsible for the automate injection of the needed prefixes.</p>
+        <p>
+          So the prefix mixin will be the following:
+        </p>
+        <pre>
+          <code>
+            <span>@mixin</span> prefix($property, $value) {
+              <span>$vendors:</span> (webkit moz ms o);
+
+              <span>@each</span> $vendor in $vendors {
+                <span>#{"-" + $vendor + "-" + $property}</span>: #{$value};
+              }
+
+              <span>#{$property}</span>: #{$value};
+            }
+          </code>
+        </pre>
+        <p>The above mixin has 2 arguments the $property which can be any property with a prefix like tranform, animation or transition and the $value argument which store the property value.</p>
+
+        <p>
+          Now that we have the prefix mixin we can easily output the animation prefixes.
+        </p>
+        <pre>
+          <code>
+            <em>// If we include like this:</em>
+
+            div {
+              <span>@include</span> prefix(animation, fadein 1s linear);
+            }
+
+            <em>// The output will be:</em>
+
+            div {
+              <span>-webkit-animation:</span> fadein 2s linear;
+                  <span>-moz-animation:</span> fadein 2s linear;
+                    <span>-ms-animation:</span> fadein 2s linear;
+                      <span>-o-animation:</span> fadein 2s linear;
+                           <span>animation:</span> fadein 2s linear;
+            }
+          </code>
+        </pre>
+        <p>
+        </p>
+        <p>
+          We can easily use the above solution for any other property with prefixes like transition or transform.
+        </p>
+        <h2>Keyframes mixin</h2>
+        <p>
+          Our keyframes mixin contain only 1 argument, the keyframes $name. Since keyframe have different syntax from animation we can't use the above prefix mixin so we chose the verbose way. Because we need to set the mixin value as the keyframes name we need to use the interpolation method to pass the value as a string.
+        </p>
+        <pre>
+          <code>
+            <span>@mixin</span> keyframes($name) {
+              <span>@-webkit-keyframes</span> #{$name} {
+                @content;
+              }
+
+              <span>@-moz-keyframes</span> #{$name} {
+                @content;
+              }
+
+              <span>@-o-keyframes</span> #{$name} {
+                @content;
+              }
+
+              <span>@keyframes</span> #{$name} {
+                @content;
+              }
+            }
+
+            <em>// If we include like this:</em>
+
+            <span>@include</span> keyframes(fadein) {
+              0%    { <span>opacity:</span> 0; }
+              100% { <span>opacity:</span> 1; }
+            }
+
+            <em>// The output will be:</em>
+
+            <span>@-webkit-keyframes</span> fadein {
+              0%    { <span>opacity:</span> 0; }
+              100% { <span>opacity:</span> 1; }
+            }
+
+            <span>@-moz-keyframes</span> fadein {
+              0%     { <span>opacity:</span> 0; }
+              100% { <span>opacity:</span> 1; }
+            }
+
+            <span>@-o-keyframes</span> fadein {
+              0%    { <span>opacity:</span> 0; }
+              100% { <span>opacity:</span> 1; }
+            }
+
+            <span>@keyframes</span> fadein {
+              0%    { <span>opacity:</span> 0; }
+              100% { <span>opacity:</span> 1; }
+            }
+          </code>
+        </pre>
+        <p>
+          If we're using an automated task like autoprefixer again the above mixin is redundant.
+        </p>
+        <h2>Animation &amp; keyframes all in once</h2>
+        <p>
+          Now that we explained how these mixins work individually let's combine them to create the ultimate solution.
+        </p>
+        <p>Our animation mixin now contain the keyframes. So our arguments are the animation value and the keyframes name. Of course the @at-root is needed so keyframes can be extracted outside of the element in which mixin is included.</p>
+        <pre>
+          <code>
+            <span>@mixin</span> animation($name, $value) {
+              <span>@include</span> prefix(animation, $value);
+
+              <span>@at-root</span> {
+                <span>@-webkit-keyframes</span> $name {
+                  @content;
+                }
+
+                <span>@-moz-keyframes</span> $name {
+                  @content;
+                }
+
+                <span>@-o-keyframes</span> $name {
+                  @content;
+                }
+
+                <span>@keyframes</span> $name {
+                  @content;
+                }
+              }
+            }
+
+            <em>// If we include like this:</em>
+
+            div {
+              <span>@include</span> animation(fadein, fadein 2s linear) {
+                0%    { <span>opacity:</span> 0; }
+                100% { <span>opacity:</span> 1; }
+              }
+            }
+
+            <em>// The output will be:</em>
+
+            div {
+              <span>-webkit-animation:</span> fadein 2s linear;
+                  <span>-moz-animation:</span> fadein 2s linear;
+                    <span>-ms-animation:</span> fadein 2s linear;
+                      <span>-o-animation:</span> fadein 2s linear;
+                           <span>animation:</span> fadein 2s linear;
+            }
+
+            <span>@-webkit-keyframes</span> fadein {
+              0%    { <span>opacity:</span> 0; }
+              100% { <span>opacity:</span> 1; }
+            }
+
+            <span>@-moz-keyframes</span> fadein {
+              0%     { <span>opacity:</span> 0; }
+              100% { <span>opacity:</span> 1; }
+            }
+
+            <span>@-o-keyframes</span> fadein {
+              0%    { <span>opacity:</span> 0; }
+              100% { <span>opacity:</span> 1; }
+            }
+
+            <span>@keyframes</span> fadein {
+              0%    { <span>opacity:</span> 0; }
+              100% { <span>opacity:</span> 1; }
+            }
+          </code>
+        </pre>
+        <p>Quite easy ha! Now we can set our animation without care about keyframes or prefixes.</p>
+        <p>You can see the above mixin in action in the following gist, enjoy!</p>
+        <div class="demo">
+          <p class="sassmeister" data-gist-id="abc3eb2a68a921b6b3c7" data-height="480" data-theme="dawn"><a href="http://sassmeister.com/gist/abc3eb2a68a921b6b3c7">Play with this gist on SassMeister.</a></p><script src="http://cdn.sassmeister.com/js/embed.js" async></script>
+        </div>
+        <a href="https://twitter.com/share" class="footer-line twitter-share-button" data-via="VangelTzo">Tweet</a>
+        <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+      </div>
+    </div>
+
+    <div class="overlay">
+      <ul class="projects-menu">
+        <li>
+          <a href="https://www.behance.net/gallery/13876527/Team-Dashboard" target="_blank" rel="nofollow external">
+            <span>Users <strong>Dashboard</strong></span>
+          </a>
+        </li>
+        <li>
+          <a href="http://giorgibou.com/" target="_blank" rel="nofollow external">
+            <span>Giorgi Bou <strong>Architect</strong></span>
+          </a>
+        </li>
+        <li>
+          <a href="http://rpk.io/" target="_blank" rel="nofollow external">
+            <span>Rpk <strong>Photography</strong></span>
+          </a>
+        </li>
+        <li>
+          <a href="https://www.behance.net/gallery/4037361/logos" target="_blank" rel="nofollow external">
+            <span>logo <strong>collection</strong></span>
+          </a>
+        </li>
+        <li>
+          <a href="https://www.behance.net/gallery/8009509/Resume-CV-vangeltzo" target="_blank" rel="nofollow external">
+            <span>resume <strong>print</strong></span>
+          </a>
+        </li>
+        <li>
+          <a href="http://anantiresort.gr/" target="_blank" rel="nofollow external">
+            <span>Ananti <strong>City Resort</strong></span>
+          </a>
+        </li>
+        <li>
+          <a href="http://dsaltas.gr/" target="_blank" rel="nofollow external">
+            <span>Dsaltas <strong>energy</strong></span>
+          </a>
+        </li>
+        <li>
+          <a href="http://gitart.me/" target="_blank" rel="nofollow external">
+            <span>git <strong>art</strong></span>
+          </a>
+        </li>
+        <li>
+          <a href="animation_and_keyframes_mixin.html#" class="inactive" target="_blank" rel="nofollow external">
+            <span>
+              Koncept <strong>Application</strong><br>
+              <em>in progress</em>
+            </span>
+          </a>
+        </li>
+        <li>
+          <a href="animation_and_keyframes_mixin.html#" class="inactive" target="_blank" rel="nofollow external">
+            <span>
+              Chieen <strong>Art director</strong><br>
+              <em>in progress</em>
+            </span>
+          </a>
+        </li>
+      </ul>
+    </div>
+
+    <script src="../js/jquery.min.js"></script>
+
+    <script>
+      $('.projects-menu-icon').click(function() {
+        $('html').toggleClass('no-scroll');
+        $(this).toggleClass('active');
+        $('.overlay').toggleClass('show');
+      });
+    </script>
+
+  </body>
+</html>

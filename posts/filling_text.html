@@ -1,0 +1,264 @@
+<!DOCTYPE>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Vangel Tzo | Filling text effect - Technical articles on front-end development</title>
+    <meta name="description" content="This is my online home and blog, where I write and share technical thoughts and articles on front-end development, including the latest cutting-edge technologies.">
+    <meta name="author" content="Vangel Tzo">
+    <meta name="keywords" content="css, sass, scss, ux, design, front-end development, web developer, mixin, code, development, user experience, ui, performance, best practises, filling text, loading text, text animation">
+    <meta property="og:title" content="Vangel Tzo | Filling text effect">
+    <meta property="og:url" content="http://vangeltzo.com/filling_text.html">
+    <meta property="og:image" content="http://vangeltzo.com/img/logo.png">
+    <meta property="og:description" content="This is my online home and blog, where I write and share technical thoughts and articles on front-end development, including the latest cutting-edge technologies.">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="https://vangeltzo.com/posts/favicon.ico">
+    <link rel="stylesheet" href="../stylesheets/screen.css">
+
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+      ga('create', 'UA-39935438-1', 'auto');
+      ga('send', 'pageview');
+
+    </script>
+  </head>
+
+  <body id="posts" class="inner-post-page-4">
+
+    <div class="block-left">
+      <div class="content">
+        <a href="../index.html" class="logo">Vangel Tzo</a>
+        <div class="post-title-section">
+          <div class="section-line">Posts <em>/</em></div>
+          <div class="date"></div>
+          <h1 class="section-title">3 ways to: create a filling text</h1>
+          <ul class="tags">
+            <li>CSS</li>
+            <li>HTML</li>
+            <li>SASS</li>
+
+          </ul>
+          <div class="section-line reverse"><a href="../posts.html">Back to posts</a> <em>/</em></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="block-right">
+      <div class="tweet-link">
+        <a href="https://twitter.com/share" class="footer-line twitter-share-button" data-via="VangelTzo">Tweet</a>
+        <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+      </div>
+      <a href="../posts.html" title="posts" class="posts-menu-icon"></a>
+      <a title="projects" class="projects-menu-icon">
+        <span></span>
+      </a>
+      <div class="inner-post content">
+        <div class="date-highlight">4 FEB 2015</div>
+        <p>
+          In this article we're going to explore some techniques that can be used to create a filling text effect with CSS. Some of these techniques covered in the article are experimental.
+        </p>
+        <p>I'm going to demonstrate you 3 simple ways to apply this effect:</p>
+        <ul>
+          <li>1: With data attributes &amp; content</li>
+          <li>2: With background-clip</li>
+          <li>3: With clip rect</li>
+        </ul>
+        <h2>With data attributes &amp; content</h2>
+        <p>
+          To create this effect first we need to add the needed html markup.
+        </p>
+        <pre>
+          <code>
+            <span>&#60;p data-text="loading"&#62;</span>loading<span>&#60;/p&#62;</span>
+          </code>
+        </pre>
+        <p>data-* attributes allow us to store extra information on standard, semantic HTML elements without polluting the class name.</p>
+        <p>
+          So the styles for the above markup will be:
+        </p>
+        <pre>
+          <code>
+            p {
+              <span>display:</span> inline-block;
+              <span>position:</span> relative;
+              <span>color:</span> red;
+              <span>font-size:</span> 60px;
+
+              &:before {
+                <span>content:</span> attr(data-text);
+                <span>position:</span> absolute;
+                <span>overflow:</span> hidden;
+                <span>white-space:</span> nowrap;
+                <span>width:</span> 0;
+                <span>color:</span> blue;
+                <span>animation:</span> fill 2s infinite;
+              }
+            }
+
+            @keyframes fill {
+                50%   { <span>width:</span> 100%; }
+                100% { <span>width:</span> 0%;     }
+            }
+          </code>
+        </pre>
+        <p>
+          The explanation is simple, we place the overlapping text in before pseudo-element content property via data attribute. Then we need to place the pseudo element upon the 'p' tag and set it's width to 0px. Overflow hidden ensure us that nothing it's going to overlap the original content and white-space no wrap that text won't wrap in a new line. Finally an animation set the width back to 100% so it can fill the pseudo element and fake the filling effect.
+        </p>
+        <small>In our example we set the width from 0% to 100% and back to 0% so we set the pick at 50%.</small>
+        <h2>With background clip</h2>
+        <p>
+          This is an experimental solution based on webkit only browsers. Background-clip is a css property that allows backgrounds specified on elements to clip to the text content of the element.
+        </p>
+        <p>
+          So the styles will be:
+        </p>
+        <pre>
+          <code>
+            p {
+            <span>display:</span> inline-block;
+            <span>font-size:</span> 60px;
+            <span>background:</span> url('image.jpg') no-repeat;
+            <span>-webkit-background-clip:</span> text;
+            <span>color:</span> rgba(255, 255, 255, 0);
+            <span>text-shadow:</span> 0 0 rgba(0, 0, 0, .1);
+            <span>background-size: 0 100%;</span>
+            <span>animation:</span> fill 2s infinite;
+            }
+
+            @keyframes fill {
+                50%   { <span>background-size:</span> 100% 100%; }
+                100% { <span>background-size:</span> 0 100%;        }
+            }
+          </code>
+        </pre>
+        <p>
+          The main trick is to set the background clip property to text. Then we need to ensure that the default text is going to be visible, that's why we apply a trasparent color via rgba and set a text-shadow to fill the 'empty' state of the text. Finally the animation set the background-size of x axis from 0% back to 100% to create the filling effect. Notice that this method can only work with background images and not with plain colors.
+        </p>
+        <h2>With clip rect</h2>
+        <p>
+          To create this text filling effect with clip we first need to understand how clip rect works.
+        </p>
+        <p>
+          To begin with, clip only works with position fixed or absolute. The clip property apart from auto and inherit accept a shape value, rect in our use case. Clip requires four length values, separated by commas: top, right, bottom and left. As for padding or margin shorthands, it’s clockwise. The strange part is how these values really work. Let's dig in.
+        </p>
+        <p>Both the top and the bottom values define the offset from the top border and the left and right values define the offset from the left border. It's strange I know but this is how clip works. So let's go back to our example and explain it. Our markup will be the same as the first example (we are going to store the overlaping value in a data attribute)</p>
+        <pre>
+          <code>
+            <span>&#60;p data-text="loading"&#62;</span>loading<span>&#60;/p&#62;</span>
+          </code>
+        </pre>
+        <p>Our styles for the above markup will be:</p>
+        <pre>
+          <code>
+            p {
+              <span>font-size:</span> 60px;
+              <span>position:</span> relative;
+              <span>color:</span> red;
+              <span>display:</span> inline-block;
+
+              &:before {
+                <span>content:</span> attr(data-text);
+                <span>position:</span> absolute;
+                <span>color:</span> blue;
+                <span>clip:</span> rect(0, 0, 100px, 0);
+                <span>animation:</span> fill 2s infinite;
+              }
+            }
+
+            @keyframes fill {
+                50%    { <span>clip:</span> rect(0, 200px, 100px, 0); }
+                100%  { <span>clip:</span> rect(0, 0, 100px, 0);        }
+            }
+          </code>
+        </pre>
+        <p>
+          Clip rect is our magic property here. Our default value is clip: rect(0, 0, 100px, 0) this means that we set a height on the before pseudo element of 100px (the height of text) from the top and a zero width. Now when we apply the animation our clip value is clip: rect(0, 200px, 100px, 0) which means that we expand the right value for 200px from the left side. The following image explains that better.
+        </p>
+        <p>
+          <img src="../img/clip.jpg" alt="clip">
+        </p>
+        <p>Let's sum up the above solutions and present them in the following pen, enjoy!</p>
+        <div class="demo">
+          <p data-height="318" data-theme-id="11482" data-slug-hash="ZYXRzE" data-default-tab="result" data-user="srekoble" class='codepen'>See the Pen <a href='http://codepen.io/srekoble/pen/ZYXRzE/'>ZYXRzE</a> by Vangel Tzo (<a href='http://codepen.io/srekoble'>@srekoble</a>) on <a href='http://codepen.io'>CodePen</a>.</p>
+          <script async src="https://assets.codepen.io/assets/embed/ei.js"></script>
+        </div>
+        <a href="https://twitter.com/share" class="footer-line twitter-share-button" data-via="VangelTzo">Tweet</a>
+        <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+      </div>
+    </div>
+
+    <div class="overlay">
+      <ul class="projects-menu">
+        <li>
+          <a href="https://www.behance.net/gallery/13876527/Team-Dashboard" target="_blank" rel="nofollow external">
+            <span>Users <strong>Dashboard</strong></span>
+          </a>
+        </li>
+        <li>
+          <a href="http://giorgibou.com/" target="_blank" rel="nofollow external">
+            <span>Giorgi Bou <strong>Architect</strong></span>
+          </a>
+        </li>
+        <li>
+          <a href="http://rpk.io/" target="_blank" rel="nofollow external">
+            <span>Rpk <strong>Photography</strong></span>
+          </a>
+        </li>
+        <li>
+          <a href="https://www.behance.net/gallery/4037361/logos" target="_blank" rel="nofollow external">
+            <span>logo <strong>collection</strong></span>
+          </a>
+        </li>
+        <li>
+          <a href="https://www.behance.net/gallery/8009509/Resume-CV-vangeltzo" target="_blank" rel="nofollow external">
+            <span>resume <strong>print</strong></span>
+          </a>
+        </li>
+        <li>
+          <a href="http://anantiresort.gr/" target="_blank" rel="nofollow external">
+            <span>Ananti <strong>City Resort</strong></span>
+          </a>
+        </li>
+        <li>
+          <a href="http://dsaltas.gr/" target="_blank" rel="nofollow external">
+            <span>Dsaltas <strong>energy</strong></span>
+          </a>
+        </li>
+        <li>
+          <a href="http://gitart.me/" target="_blank" rel="nofollow external">
+            <span>git <strong>art</strong></span>
+          </a>
+        </li>
+        <li>
+          <a href="filling_text.html#" class="inactive" target="_blank" rel="nofollow external">
+            <span>
+              Koncept <strong>Application</strong><br>
+              <em>in progress</em>
+            </span>
+          </a>
+        </li>
+        <li>
+          <a href="filling_text.html#" class="inactive" target="_blank" rel="nofollow external">
+            <span>
+              Chieen <strong>Art director</strong><br>
+              <em>in progress</em>
+            </span>
+          </a>
+        </li>
+      </ul>
+    </div>
+
+    <script src="../js/jquery.min.js"></script>
+
+    <script>
+      $('.projects-menu-icon').click(function() {
+        $('.overlay').toggleClass('show');
+      });
+    </script>
+
+  </body>
+</html>
